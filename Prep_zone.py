@@ -12,4 +12,4 @@ prep_zone_area = math.pi*(prep_zone_radius**2)
 
 vis_data = np.column_stack((magnitude, prep_zone_radius))
 np.set_printoptions(edgeitems=5)
-print(vis_data)
+#print(vis_data)
