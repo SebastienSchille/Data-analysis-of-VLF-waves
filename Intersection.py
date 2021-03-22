@@ -1,4 +1,4 @@
-from UTM_proj import xPTK,yPTK,xJJY,yJJY,xeq,yeq,JJY_PTK_distance
+from UTM_proj import xPTK,yPTK,xJJY,yJJY,xJJI,yJJI,xNWC,yNWC,xeq,yeq,JJY_PTK_distance,JJI_PTK_distance,NWC_PTK_distance
 from Prep_zone import prep_zone_radius
 from Fresnel_zone import fresnelzones
 
@@ -9,12 +9,17 @@ from shapely import affinity
 from matplotlib import pyplot as plt
 from matplotlib.patches import Polygon
 
-#Fresnel zone centre point
-dy = (yPTK - yJJY)/1000
-dx = (xPTK - xJJY)/1000
-anglefres = atan(dy/dx) * (180/pi)
-xfres = dx + dx/2
-yfres = dy + dy/2
+print(xPTK,yPTK)
+print(xJJY,yJJY)
+print(xJJI, yJJI)
+
+def fresnelcentre (xtrans, ytrans):
+    dx = (xPTK - xtrans)/1000
+    dy = (yPTK - ytrans)/1000
+    anglefres = atan(dy/dx) * (180/pi)
+    xfres = (xtrans/1000) + dx/2
+    yfres = (ytrans/1000) + dy/2
+    return anglefres,xfres,yfres
 
 def create_ellipse(centre, a, b, angle):
     circle = Point(centre).buffer(1)
@@ -24,28 +29,59 @@ def create_ellipse(centre, a, b, angle):
 
 #fig setup
 fig,ax = plt.subplots()
-ax.set_xlim([-3000,6000])
-ax.set_ylim([-3000,6000])
+ax.set_xlim([-6000,6000])
+ax.set_ylim([-6000,8000])
 ax.set_aspect('equal')
 
-#Fresnel zone ellipse in blue
-fresnel_ellipse = create_ellipse((xfres,yfres), JJY_PTK_distance, fresnelzones[0], anglefres)
-verts1 = np.array(fresnel_ellipse.exterior.coords.xy)
+#Fresnel zone ellipses in blue
+anglefres,xfres,yfres = fresnelcentre(xJJY, yJJY)
+fresnel_ellipse_JJY = create_ellipse((xfres,yfres), (JJY_PTK_distance/2), fresnelzones[0], anglefres)
+verts1 = np.array(fresnel_ellipse_JJY.exterior.coords.xy)
 patch1 = Polygon(verts1.T, color = 'blue', alpha = 0.5)
 ax.add_patch(patch1)
 
+anglefres,xfres,yfres = fresnelcentre(xJJI, yJJI)
+fresnel_ellipse_JJI = create_ellipse((xfres,yfres), (JJI_PTK_distance/2), fresnelzones[1], anglefres)
+verts2 = np.array(fresnel_ellipse_JJI.exterior.coords.xy)
+patch2 = Polygon(verts2.T, color = 'blue', alpha = 0.5)
+ax.add_patch(patch2)
+
+anglefres,xfres,yfres = fresnelcentre(xNWC, yNWC)
+fresnel_ellipse_NWC = create_ellipse((xfres,yfres), (NWC_PTK_distance/2), fresnelzones[2], anglefres)
+verts3 = np.array(fresnel_ellipse_NWC.exterior.coords.xy)
+patch3 = Polygon(verts3.T, color = 'blue', alpha = 0.5)
+ax.add_patch(patch3)
+
 #Preperation zone circle in red
-overlap_area = []
+overlap_area_JJY = np.array([])
+overlap_area_JJI = np.array([])
+overlap_area_NWC = np.array([])
 for i in range(len(prep_zone_radius)):   
     prepzone_circle = create_ellipse(((xeq[i]/1000),(yeq[i]/1000)), prep_zone_radius[i], prep_zone_radius[i], 0)
-    verts2 = np.array(prepzone_circle.exterior.coords.xy)
-    patch2 = Polygon(verts2.T,color = 'red', alpha = 0.5)
-    ax.add_patch(patch2)
-    intersect = fresnel_ellipse.intersection(prepzone_circle)
-    overlap_area.append(intersect.area/fresnel_ellipse.area)
+    verts4 = np.array(prepzone_circle.exterior.coords.xy)
+    patch4 = Polygon(verts4.T,color = 'red', alpha = 0.5)
+    ax.add_patch(patch4)
+    intersect_JJY = fresnel_ellipse_JJY.intersection(prepzone_circle)
+    intersect_JJI = fresnel_ellipse_JJI.intersection(prepzone_circle)
+    intersect_NWC = fresnel_ellipse_NWC.intersection(prepzone_circle)
+    overlap_area_JJY = np.append(overlap_area_JJY, intersect_JJY.area/fresnel_ellipse_JJY.area)
+    overlap_area_JJI = np.append(overlap_area_JJI, intersect_JJI.area/fresnel_ellipse_JJI.area)
+    overlap_area_NWC = np.append(overlap_area_NWC, intersect_NWC.area/fresnel_ellipse_NWC.area)
 
+#Filter overlap results
+overlap_area_JJY = overlap_area_JJY[overlap_area_JJY != 0]
+overlap_area_JJY = overlap_area_JJY*100
+overlap_area_JJI = overlap_area_JJI[overlap_area_JJI != 0]
+overlap_area_JJI = overlap_area_JJI*100
+overlap_area_NWC = overlap_area_NWC[overlap_area_NWC != 0]
+overlap_area_NWC = overlap_area_NWC*100
 
-print(max(overlap_area))
+print("These are the eq overlaps with transmitter JJY", overlap_area_JJY)
+print("There are a total of:", len(overlap_area_JJY), "earthquakes that overlap with JJY's signal")
+print("These are the eq overlaps with transmitter JJI", overlap_area_JJI)
+print("There are a total of:", len(overlap_area_JJI), "earthquakes that overlap with JJI's signal")
+print("These are the eq overlaps with transmitter NWC", overlap_area_NWC)
+print("There are a total of:", len(overlap_area_NWC), "earthquakes that overlap with NWC's signal")
 plt.show()
 
 
