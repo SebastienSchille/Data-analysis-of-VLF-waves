@@ -26,15 +26,28 @@ for a in range(len(years)):
             else:
                 vlf_amp_diff = np.column_stack((vlf_amp_diff, diff))
 
+        
+
+        vlf_amp_std = np.std(vlf_amp_diff, axis=0)
+        for x in range(np.shape(vlf_amp)[1]-1):
+            counter=0
+            for y in range(4320):
+                if abs(vlf_amp_diff[y, x]) > (2*vlf_amp_std[x]):
+                        counter += 1
+            if counter > 10:
+                index.append([x,months[b],years[a]])
+                anomalies += 1
+
+"""
         vlf_amp_std = np.std(vlf_amp_diff, axis=1)
         for x in range(np.shape(vlf_amp)[1]-1):
             counter=0
             for y in range(4320):
-                if vlf_amp_diff[y, x] > (2*vlf_amp_std[y]):
+                if abs(vlf_amp_diff[y, x]) > abs(2*vlf_amp_std[y]):
                         counter += 1
-            if counter !=0:
+            if counter != 0:
                 index.append([x,months[b],years[a]])
                 anomalies += 1
-
+"""
 print('Number of days with signal anomalies =', anomalies, '/ 1224')
 print(index)
