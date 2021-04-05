@@ -6,16 +6,21 @@ def fresnelzone(n,d1,d2,lambda0,D):
     fresnelzone = sqrt((n*d1*d2*lambda0)/D) / 1000
     return fresnelzone
 
-#Wavelength for VLF transmitters
-lambda_JJY = (3*10**8) / (40*10**3)
-lambda_JJI = (3*10**8) / (22.2*10**3)
-lambda_NWC = (3*10**8) / (19.8*10**3)
+#Function to calculate wavelengths for VLF signals
+wavelengths = [40, 22.2, 19.8, 21.4] #JJY, JJI, NWC, NPM (KHz)
+def wavelength(wavelengths):
+    VLF_lambda = (3*10**8) / (wavelengths*10**3)
+    return VLF_lambda
 
 #Calling the fresnelzone function to calculate Frensel zones
-fresnelzones_JJY = fresnelzone(3, (VLF_distances[0]/2)*(10**3), (VLF_distances[0]/2)*(10**3), lambda_JJY, VLF_distances[0]*(10**3))
-fresnelzones_JJI = fresnelzone(3, (VLF_distances[1]/2)*(10**3), (VLF_distances[1]/2)*(10**3), lambda_JJI, VLF_distances[1]*(10**3))
-fresnelzones_NWC = fresnelzone(3, (VLF_distances[2]/2)*(10**3), (VLF_distances[2]/2)*(10**3), lambda_NWC, VLF_distances[2]*(10**3))
-fresnelzones = [fresnelzones_JJY, fresnelzones_JJI, fresnelzones_NWC]
+fresnelzones = []
+for a in range(1,7,2):
+    print(a)
+    for i in range(len(VLF_distances)):
+        VLF_lambda = wavelength(wavelengths[i])
+        fresnel = fresnelzone(a, (VLF_distances[i]/2)*(10**3), (VLF_distances[i]/2)*(10**3), VLF_lambda, VLF_distances[i]*(10**3))
+        fresnelzones.append(fresnel)
+
 #print(fresnelzones)
 
 
