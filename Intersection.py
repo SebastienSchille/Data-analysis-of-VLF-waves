@@ -9,10 +9,6 @@ from shapely import affinity
 from matplotlib import pyplot as plt
 from matplotlib.patches import Polygon
 
-print(xPTK,yPTK)
-print(xJJY,yJJY)
-print(xJJI, yJJI)
-
 def fresnelcentre (xtrans, ytrans):
     dx = (xPTK - xtrans)/1000
     dy = (yPTK - ytrans)/1000
@@ -29,8 +25,8 @@ def create_ellipse(centre, a, b, angle):
 
 #fig setup
 fig,ax = plt.subplots()
-ax.set_xlim([-6000,6000])
-ax.set_ylim([-6000,8000])
+ax.set_xlim([-3000,4000])
+ax.set_ylim([-3000,7000])
 ax.set_aspect('equal')
 
 #Fresnel zone ellipses in blue
