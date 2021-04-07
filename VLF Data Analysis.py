@@ -42,15 +42,17 @@ diff_len = np.array([])
 for i in range(np.shape(vlf_amp)[1]):
             diff = vlf_amp[:,i] - vlf_amp_avg
             delete_rows = list(range(int(daylight_start[i+60]), int(daylight_end[i+60])))
+            print(daylight_start[i+60], daylight_end[i+60])
             diff = np.delete(diff, delete_rows, axis=0)
             diff_len = np.append(diff_len, (len(diff)))
-            std_val = (2*np.std(diff)) + np.mean(diff)
-            vlf_amp_std = np.append(vlf_amp_std, std_val)
+            #std_val = (2*np.std(diff)) + np.mean(diff)
+            #vlf_amp_std = np.append(vlf_amp_std, std_val)
 
 
             if i == 18:
                 vlf_amp_diff = np.append(vlf_amp_diff, diff)
                 mean_val = np.mean(diff)
+vlf_amp_std = np.std()
 
 #Graphing---------------------------------------------------
 time = np.array(range(int(diff_len[18])))
