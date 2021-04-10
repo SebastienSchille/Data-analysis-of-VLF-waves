@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\sebi2\\anaconda3\\envs\\Geodata\\python.exe"
+    "python.pythonPath": "C:\\Users\\sebi2\\anaconda3\\envs\\Geodata\\python.exe",
+    "terminal.integrated.fontSize": 15
 }
