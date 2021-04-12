@@ -21,3 +21,4 @@ for i in range(len(daylight_end)):
 daylight_times = np.column_stack((daylight_start, daylight_end))
 #np.savetxt('vlf_data_output.txt',daylight_times, delimiter=',', fmt='%4i')
 #print(daylight_times)
+#print(np.shape(daylight_times))

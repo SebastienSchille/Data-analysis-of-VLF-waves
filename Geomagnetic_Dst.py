@@ -23,5 +23,5 @@ for a in range(4):
                 Dst_events = np.vstack((Dst_events, [(str(i)+months[b]+str(years[a])), Dst_avg, Dst_min]))
 
 Dst_events = np.delete(Dst_events, 0, axis=0)
-np.savetxt('Dst_events.txt', Dst_events, delimiter=',')
-#print(Dst_events)
+#np.savetxt('Dst_events.txt', Dst_events, delimiter=',')
+print(Dst_events)
