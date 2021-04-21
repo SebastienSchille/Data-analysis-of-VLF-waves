@@ -25,14 +25,14 @@ def init_average (day, station_amp, station_phase):
 def average (day, station_amp, station_phase):
     for i in range((day-5), day+1):
         if i < 1:
-            amp = np.genfromtxt(f'T{30+i}JUN4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-            phase = np.genfromtxt(f'T{30+i}JUN4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+            amp = np.genfromtxt(f'T{29+i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+            phase = np.genfromtxt(f'T{29+i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
         elif i > 0 and i < 10:
-            amp = np.genfromtxt(f'T0{i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-            phase = np.genfromtxt(f'T0{i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+            amp = np.genfromtxt(f'T0{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+            phase = np.genfromtxt(f'T0{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
         else:
-            amp = np.genfromtxt(f'T{i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-            phase = np.genfromtxt(f'T{i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+            amp = np.genfromtxt(f'T{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+            phase = np.genfromtxt(f'T{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
         if i == (day-5):
             vlf_amp = amp
             vlf_phase = phase
@@ -72,7 +72,7 @@ def difference (vlf_amp_diff, vlf_phase_diff, day, loc, station_amp, station_pha
     phase_diff = phase - vlf_phase_avg
     vlf_amp_diff = np.column_stack((vlf_amp_diff, amp_diff))
     vlf_phase_diff = np.column_stack((vlf_phase_diff, phase_diff))
-    return vlf_amp_diff, vlf_phase_diff, vlf_amp_avg, amp
+    return vlf_amp_diff, vlf_phase_diff
 
 def std (vlf_amp_night, vlf_phase_night):
     vlf_amp_std = np.std(vlf_amp_night)
@@ -105,9 +105,10 @@ loc_oct = 273
 loc_nov = 304
 counter = 0
 
-    avg_amp_NWC, avg_phase_NWC, amp_NWC, phase_NWC = average(1, 0, 1)
-    avg_amp_JJI, avg_phase_JJI, amp_JJI, phase_JJI = average(1, 4, 5)
-    avg_amp_JJY, avg_phase_JJY, amp_JJY, phase_JJY = average(1, 6, 7)
+avg_amp_NWC, avg_phase_NWC, amp_NWC, phase_NWC = average(1, 0, 1)
+avg_amp_JJI, avg_phase_JJI, amp_JJI, phase_JJI = average(1, 4, 5)
+avg_amp_JJY, avg_phase_JJY, amp_JJY, phase_JJY = average(1, 6, 7)
+
 
 
 
@@ -134,8 +135,8 @@ ax = plt.subplot(2,3,2)
 plt.plot(time, amp_JJI, color='blue')
 plt.plot(time, avg_amp_JJI, linestyle='--', color='red')
 ax.set_title('JJI-PTK')
-ax.set_xticks(list(range(0,4500,360)))
-ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24'])
+#ax.set_xticks(list(range(0,4500,360)))
+#ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24'])
 plt.xlabel('Time UTC+12')
 plt.ylabel('Magnitude')
 

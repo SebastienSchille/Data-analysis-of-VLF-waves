@@ -11,7 +11,7 @@ months = ['JAN','FEB','MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'N
 vlf_data_avg = np.empty(8)
 
 def raw (month, year, station_amp, station_phase):
-    for i in range(1,32):
+    for i in range(1,31):
         if i > 0 and i < 10:
             amp = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
@@ -30,23 +30,31 @@ def raw (month, year, station_amp, station_phase):
     
 
 def average (station_amp, station_phase):
-    for a in range(1,32):
+    for a in range(1,31):
         for i in range((a-5), a+1):
-            if i < 1:
-                amp = np.genfromtxt(f'T{30+i}NOV6A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-                phase = np.genfromtxt(f'T{30+i}NOV6A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            elif i > 0 and i < 10:
-                amp = np.genfromtxt(f'T0{i}DEC6A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-                phase = np.genfromtxt(f'T0{i}DEC6A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            else:
-                amp = np.genfromtxt(f'T{i}DEC6A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-                phase = np.genfromtxt(f'T{i}DEC6A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            if i == (a-5):
-                vlf_amp = amp
-                vlf_phase = phase
-            else:
-                vlf_amp = np.column_stack((vlf_amp, amp))
-                vlf_phase = np.column_stack((vlf_phase, phase))
+            if i != 7 or i != 8 or i != 9:
+                if i < 1:
+                    amp = np.genfromtxt(f'T{31+i}OCT4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+                    phase = np.genfromtxt(f'T{31+i}OCT4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+                elif i > 0 and i < 10:
+                    amp = np.genfromtxt(f'T0{i}NOV4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+                    phase = np.genfromtxt(f'T0{i}NOV4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+                elif i > 30:
+                    amp = np.genfromtxt(f'T0{i-30}DEC4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+                    phase = np.genfromtxt(f'T0{i-30}DEC4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+                else:
+                    amp = np.genfromtxt(f'T{i}NOV4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+                    phase = np.genfromtxt(f'T{i}NOV4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+                if i==6 or i == 7 or i == 8 or i == 9:
+                    amp[amp != float('nan')] = float('nan')
+                    phase[phase != float('nan')] = float('nan')
+                    print(amp)
+                if i == (a-5):
+                    vlf_amp = amp
+                    vlf_phase = phase
+                else:
+                    vlf_amp = np.column_stack((vlf_amp, amp))
+                    vlf_phase = np.column_stack((vlf_phase, phase))
         vlf_amp[vlf_amp == 0] = float('nan')
         vlf_phase[vlf_phase == 211.00] = float('nan')
         vlf_amp_a = np.nanmean(vlf_amp, axis=1)
@@ -62,9 +70,9 @@ def average (station_amp, station_phase):
 #---------------Main code (Raw signal)-------------------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_month_NWC, vlf_phase_month_NWC = raw('DEC', 6, 0, 1)
-vlf_amp_month_JJI, vlf_phase_month_JJI = raw('DEC', 6, 4, 5) 
-vlf_amp_month_JJY, vlf_phase_month_JJY = raw('DEC', 6, 6, 7) 
+vlf_amp_month_NWC, vlf_phase_month_NWC = raw('NOV', 4, 0, 1)
+vlf_amp_month_JJI, vlf_phase_month_JJI = raw('NOV', 4, 4, 5) 
+vlf_amp_month_JJY, vlf_phase_month_JJY = raw('NOV', 4, 6, 7) 
 
 #------------Month plot (Raw signal)-----------------------------------
 """
