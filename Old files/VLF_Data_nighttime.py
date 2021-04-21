@@ -1,5 +1,7 @@
 import numpy as np
+import os
 
+os.chdir("./Nighttime data")
 #Function to split the time into hours and minutes
 def read_int(char):
     return float(char.strip(b'"').replace(b':',b'.'))
