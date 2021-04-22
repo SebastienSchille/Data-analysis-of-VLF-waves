@@ -1,9 +1,9 @@
 import numpy as np
 from matplotlib import pyplot as plt
 import os
-from VLF_Data_nighttime import daylight_times
+from Nighttime_UTC import nighttime_times
 
-os.chdir("./VLF Data raw")
+os.chdir("./VLF Data Raw")
 months_len = np.array([0,31,59,90,120,151,181,212,243,273,304,334])
 months_len_2004 = np.array([0,31,60,91,121,152,182,213,244,274,305,335])
 vlf_data_avg = np.empty(8)
@@ -25,14 +25,14 @@ def init_average (day, station_amp, station_phase):
 def average (day, station_amp, station_phase):
     for i in range((day-5), day+1):
         if i < 1:
-            amp = np.genfromtxt(f'T{29+i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-            phase = np.genfromtxt(f'T{29+i}JUL4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+            amp = np.genfromtxt(f'T{31+i}MAR4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+            phase = np.genfromtxt(f'T{31+i}MAR4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
         elif i > 0 and i < 10:
-            amp = np.genfromtxt(f'T0{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-            phase = np.genfromtxt(f'T0{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+            amp = np.genfromtxt(f'T0{i}MAY4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+            phase = np.genfromtxt(f'T0{i}MAY4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
         else:
-            amp = np.genfromtxt(f'T{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-            phase = np.genfromtxt(f'T{i}AUG4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+            amp = np.genfromtxt(f'T{i}MAY4A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+            phase = np.genfromtxt(f'T{i}MAY4A.kam', dtype=float, skip_header=1, usecols=(station_phase))
         if i == (day-5):
             vlf_amp = amp
             vlf_phase = phase
