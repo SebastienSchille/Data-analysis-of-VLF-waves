@@ -2,9 +2,6 @@ import numpy as np
 import os
 
 os.chdir("./Nighttime data")
-months_len = np.array([0,31,59,90,120,151,181,212,243,273,304,334])
-months_len_2004 = np.array([0,31,60,91,121,152,182,213,244,274,305,335])
-
 #Function to split the time into hours and minutes
 def read_int(char):
     return float(char.strip(b'"').replace(b':',b'.'))
@@ -18,25 +15,29 @@ def nighttime (year):
     hour1 = hour[:,0] + 12
     hour2 = hour[:,1] - 12
     hour = np.column_stack((hour2, hour1))
-    #Convert to a 20s time interval formate
+    #Convert to a 20s time interval format
     data_point1  = hour * 180
     data_point2 = mins * 3
     #Save the daylight satrt and end times into a list
     nighttime_start = np.array(data_point1[:,0] + data_point2[:,0])
     nighttime_end = np.array(data_point1[:,1] + data_point2[:,1])
-    #Zero end values that go beyond mightnight
+    #Readjust values that go beyond mightnight
     for i in range(len(nighttime_start)):
         if nighttime_start[i] < 0:
-            nighttime_start[i] = nighttime_start[i]*-1
+            nighttime_start[i] = nighttime_start[i] + (24*180)
     nighttime_times = np.column_stack((nighttime_start, nighttime_end))
     return nighttime_times
 
-nighttime_times = np.array([])
-for i in range(4,8):
-    times = nighttime(i)
-    nighttime_times = np.column_stack((nighttime_times, times))
+#----------Main code -------------------
+
+nighttime_2004 = nighttime(4)
+nighttime_2005 = nighttime(5)
+nighttime_2006 = nighttime(6)
+nighttime_2007 = nighttime(7)
 
 os.chdir("..")
-#np.savetxt('vlf_data_output.txt',nighttime_times, delimiter=',', fmt='%4i')
-#print(nighttime_times[months_len_2004[4],1])
+#np.savetxt('vlf_data_output.txt',nighttime_2004, delimiter=',', fmt='%4i')
+#print(nighttime_2004)
+#diff = nighttime_2004[:,1] - nighttime_2004[:,0]
+#print(np.min(diff)) 
 #print(np.shape(nighttime_times))
