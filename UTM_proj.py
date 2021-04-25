@@ -19,9 +19,9 @@ JJY_PTK_distance = ((((xPTK-xJJY)**2) + ((yPTK-yJJY)**2))**0.5)/1000
 JJI_PTK_distance = ((((xPTK-xJJI)**2) + ((yPTK-yJJI)**2))**0.5)/1000
 NWC_PTK_distance = ((((xPTK-xNWC)**2) + ((yPTK-yNWC)**2))**0.5)/1000
 
-print(JJY_PTK_distance)
-print(JJI_PTK_distance)
-print(NWC_PTK_distance)
+#print(JJY_PTK_distance)
+#print(JJI_PTK_distance)
+#print(NWC_PTK_distance)
 
 #Projections on multiple UTM planes
 #------------------------------------------------------------------------------------

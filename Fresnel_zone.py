@@ -20,7 +20,7 @@ for a in range(1,7,2):
         fresnel = fresnelzone(a, (VLF_distances[i]/2)*(10**3), (VLF_distances[i]/2)*(10**3), VLF_lambda, VLF_distances[i]*(10**3))
         fresnelzones.append(fresnel)
 
-print(fresnelzones)
+#print(fresnelzones)
 
 
 #THE CODE BELOW USES THE FIRST FRENSEL ZONE EQ ONLY

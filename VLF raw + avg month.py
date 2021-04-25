@@ -161,6 +161,7 @@ ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24',
 plt.xlabel('Degrees', labelpad=10)
 plt.ylabel('Magnitude', labelpad=10)
 
+"""
 #Graphing parameters
 ax = plt.subplot(3,1,2)
 plt.plot(time, vlf_phase_month_JJI, color='blue')
@@ -170,6 +171,7 @@ ax.set_xticks(list(range(0,133920,8640)))
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
 plt.xlabel('Day', labelpad=10)
 plt.ylabel('Degrees', labelpad=10)
+"""
 
 #Graphing parameters
 ax = plt.subplot(3,1,3)

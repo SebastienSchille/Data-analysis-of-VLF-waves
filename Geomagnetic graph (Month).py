@@ -13,8 +13,8 @@ Dst_values = Dst_values.flatten()
 
 
 #----------Geomagnetic data plot--------------------
-plt.rcParams['font.size'] = '22'
-ax = plt.subplot(2,1,1)
+plt.rcParams['font.size'] = '18'
+ax = plt.subplot(3,1,1)
 time = range(len(Dst_values))
 threshold = []
 for i in range(len(Dst_values)):
