@@ -22,14 +22,17 @@ def average (day, month, bmonth, bmonth_len, year, station_amp, station_phase):
         else:
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+        #if i==2 or i==3:
+        #       amp[amp != float('nan')] = float('nan')
+        #       phase[phase != float('nan')] = float('nan')
         if i == (day-5):
             vlf_amp = amp
             vlf_phase = phase
         else:
             vlf_amp = np.column_stack((vlf_amp, amp))
             vlf_phase = np.column_stack((vlf_phase, phase))
-    vlf_amp[vlf_amp == 0] = float('nan')
-    vlf_phase[vlf_phase == 211.00] = float('nan')
+    #vlf_amp[vlf_amp == 0] = float('nan')
+    #vlf_phase[vlf_phase == 0] = float('nan')
     vlf_amp_avg = np.nanmean(vlf_amp, axis=1)
     vlf_phase_avg = np.nanmean(vlf_phase, axis=1)
     return vlf_amp_avg, vlf_phase_avg
@@ -43,8 +46,8 @@ def difference (month, month_len, bmonth, bmonth_len, year, station_amp, station
         else:
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        amp[amp == 0] = float('nan')
-        phase[phase == 211.00] = float('nan')
+        #amp[amp == 0] = float('nan')
+        #phase[phase == 211.00] = float('nan')
         vlf_amp_avg, vlf_phase_avg = average(i, month, bmonth, bmonth_len, year, station_amp, station_phase)
         amp_diff = amp - vlf_amp_avg
         phase_diff = phase - vlf_phase_avg
@@ -66,28 +69,29 @@ def difference (month, month_len, bmonth, bmonth_len, year, station_amp, station
             vlf_amp_diff = np.append(vlf_amp_diff, amp_diff)
             vlf_phase_diff = np.append(vlf_phase_diff, phase_diff)
     x_axis = np.cumsum(x_axis)
+    x_axis = x_axis[0:len(x_axis):2]
     return vlf_amp_diff, vlf_phase_diff, x_axis
 
 def std (vlf_amp_night, vlf_phase_night):
+    #vlf_phase_night[vlf_phase_night > 300] = float('nan')
     vlf_amp_std = np.nanstd(vlf_amp_night)*2
     vlf_phase_std = np.nanstd(vlf_phase_night)*2
     return vlf_amp_std, vlf_phase_std
 
 #-------------------Main code-----------------------------------------------------
 
-vlf_amp_diff_NWC, vlf_phase_diff_NWC, x_axis_NWC = difference(months[8], months_len_day_2004[8], months[7], months_len_day_2004[7],4,0,1, months_len_2004[8])
+vlf_amp_diff_NWC, vlf_phase_diff_NWC, x_axis_NWC = difference(months[2], months_len_day[2], months[1], months_len_day[1],6,0,1, months_len[2]-1)
 vlf_amp_std_NWC, vlf_phase_std_NWC = std(vlf_amp_diff_NWC, vlf_phase_diff_NWC)
-vlf_amp_diff_JJI, vlf_phase_diff_JJI, x_axis_JJI = difference(months[8], months_len_day_2004[8], months[7], months_len_day_2004[7],4,4,5, months_len_2004[10])
+vlf_amp_diff_JJI, vlf_phase_diff_JJI, x_axis_JJI = difference(months[2], months_len_day[2], months[1], months_len_day[1],6,4,5, months_len[2]-1)
 vlf_amp_std_JJI, vlf_phase_std_JJI = std(vlf_amp_diff_JJI, vlf_phase_diff_JJI)
-vlf_amp_diff_JJY, vlf_phase_diff_JJY, x_axis_JJY = difference(months[8], months_len_day_2004[8], months[7], months_len_day_2004[7],4,6,7, months_len_2004[10])
+vlf_amp_diff_JJY, vlf_phase_diff_JJY, x_axis_JJY = difference(months[2], months_len_day[2], months[1], months_len_day[1],6,6,7, months_len[2]-1)
 vlf_amp_std_JJY, vlf_phase_std_JJY = std(vlf_amp_diff_JJY, vlf_phase_diff_JJY)
-
 
 #------------------------Magnitude plot difference-------------------------------------------
 
 #Setting a general font size for matplotlib
 plt.rcParams['font.size'] = '18'
-plt.subplots_adjust(hspace=0.6)
+plt.subplots_adjust(hspace=0.4)
 
 #Graphing parameters
 time = range(len(vlf_amp_diff_NWC))
@@ -98,11 +102,11 @@ ax = plt.subplot(3,1,1)
 plt.plot(time, vlf_amp_diff_NWC, color='blue')
 plt.plot(time, std_amp_NWC, linestyle='--', color='red')
 plt.plot(time, (std_amp_NWC-(2*std_amp_NWC)), linestyle='--', color='red')
-ax.set_title('VLF month NWC-PTK')
+ax.set_title('VLF dA NWC-PTK')
 ax.set_xticks(x_axis_NWC)
-ax.set_xticklabels(['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'])
-plt.xlabel('Month', labelpad=10)
-plt.ylabel('Magnitude', labelpad=10)
+ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
+#plt.xlabel('Month', labelpad=10)
+plt.ylabel('dB', labelpad=10)
 
 #Graphing parameters
 time = range(len(vlf_amp_diff_JJI))
@@ -113,11 +117,11 @@ ax = plt.subplot(3,1,2)
 plt.plot(time, vlf_amp_diff_JJI, color='blue')
 plt.plot(time, std_amp_JJI, linestyle='--', color='red')
 plt.plot(time, (std_amp_JJI-(2*std_amp_JJI)), linestyle='--', color='red')
-ax.set_title('VLF month JJI-PTK')
+ax.set_title('VLF dA JJI-PTK')
 ax.set_xticks(x_axis_JJI)
-ax.set_xticklabels(['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'])
-plt.xlabel('Month', labelpad=10)
-plt.ylabel('Magnitude', labelpad=10)
+ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
+#plt.xlabel('Month', labelpad=10)
+plt.ylabel('dB', labelpad=10)
 
 #Graphing parameters
 time = range(len(vlf_amp_diff_JJY))
@@ -128,11 +132,11 @@ ax = plt.subplot(3,1,3)
 plt.plot(time, vlf_amp_diff_JJY, color='blue')
 plt.plot(time, std_amp_JJY, linestyle='--', color='red')
 plt.plot(time, (std_amp_JJY-(2*std_amp_JJY)), linestyle='--', color='red')
-ax.set_title('VLF month JJY-PTK')
+ax.set_title('VLF dA JJY-PTK')
 ax.set_xticks(x_axis_JJY)
-ax.set_xticklabels(['0','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'])
-plt.xlabel('Month', labelpad=10)
-plt.ylabel('Magnitude', labelpad=10)
+ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
+plt.xlabel('Day', labelpad=10)
+plt.ylabel('dB', labelpad=10)
 plt.show()
 
 #------------------------Phase plot difference-------------------------------------------
@@ -143,7 +147,7 @@ time = range(len(vlf_amp_diff_NWC))
 
 #Setting a general font size for matplotlib
 plt.rcParams['font.size'] = '18'
-plt.subplots_adjust(wspace=0.3, hspace=0.3)
+plt.subplots_adjust(hspace=0.4)
 
 #Graphing parameters
 time = range(len(vlf_amp_diff_NWC))
@@ -154,11 +158,11 @@ ax = plt.subplot(3,1,1)
 plt.plot(time, vlf_phase_diff_NWC, color='blue')
 plt.plot(time, std_phase_NWC, linestyle='--', color='red')
 plt.plot(time, (std_phase_NWC-(2*std_phase_NWC)), linestyle='--', color='red')
-ax.set_title('VLF month NWC-PTK')
-ax.set_xticks(list(range(0,133920,8640)))
+ax.set_title('VLF dP NWC-PTK')
+ax.set_xticks(x_axis_NWC)
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
-plt.xlabel('Month', labelpad=10)
-plt.ylabel('Degrees', labelpad=10)
+#plt.xlabel('Month', labelpad=10)
+plt.ylabel('dgr', labelpad=10)
 
 #Graphing parameters
 time = range(len(vlf_amp_diff_JJI))
@@ -169,11 +173,11 @@ ax = plt.subplot(3,1,2)
 plt.plot(time, vlf_phase_diff_JJI, color='blue')
 plt.plot(time, std_phase_JJI, linestyle='--', color='red')
 plt.plot(time, (std_phase_JJI-(2*std_phase_JJI)), linestyle='--', color='red')
-ax.set_title('VLF month JJI-PTK')
-ax.set_xticks(list(range(0,133920,8640)))
+ax.set_title('VLF dP JJI-PTK')
+ax.set_xticks(x_axis_JJI)
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
-plt.xlabel('Month', labelpad=10)
-plt.ylabel('Degrees', labelpad=10)
+#plt.xlabel('Month', labelpad=10)
+plt.ylabel('dgr', labelpad=10)
 
 #Graphing parameters
 time = range(len(vlf_amp_diff_JJY))
@@ -184,9 +188,9 @@ ax = plt.subplot(3,1,3)
 plt.plot(time, vlf_phase_diff_JJY, color='blue')
 plt.plot(time, std_phase_JJY, linestyle='--', color='red')
 plt.plot(time, (std_phase_JJY-(2*std_phase_JJY)), linestyle='--', color='red')
-ax.set_title('VLF month JJY-PTK')
-ax.set_xticks(list(range(0,133920,8640)))
+ax.set_title('VLF dP JJY-PTK')
+ax.set_xticks(x_axis_JJY)
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
-plt.xlabel('Month', labelpad=10)
-plt.ylabel('Degrees', labelpad=10)
+#plt.xlabel('Day', labelpad=10)
+plt.ylabel('dgr', labelpad=10)
 plt.show()

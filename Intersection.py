@@ -69,13 +69,13 @@ for i in range(len(prep_zone_radius)):
     eq_date = np.genfromtxt('Seismic data.csv', dtype=str, skip_header=1, usecols=(0), delimiter=(10))
     eq_mag = np.genfromtxt('Seismic data.csv', dtype=float, skip_header=1, usecols=(4), delimiter=',')
     eq_depth = np.genfromtxt('Seismic data.csv', dtype=float, skip_header=1, usecols=(3), delimiter=',')
-    if overlap_JJY > 10:
+    if overlap_JJY > 20:
         overlap_area_JJY = np.vstack((overlap_area_JJY, [str(eq_date[i]), str(eq_mag[i]), str(eq_depth[i]), overlap_JJY]))
         eq_num_JJY = np.append(eq_num_JJY, i)
-    if overlap_JJI > 10:
+    if overlap_JJI > 20:
         overlap_area_JJI = np.vstack((overlap_area_JJI, [str(eq_date[i]), str(eq_mag[i]), str(eq_depth[i]), overlap_JJI]))
         eq_num_JJI = np.append(eq_num_JJI, i)
-    if overlap_NWC > 10:
+    if overlap_NWC > 20:
         overlap_area_NWC = np.vstack((overlap_area_NWC, [str(eq_date[i]), str(eq_mag[i]), str(eq_depth[i]), overlap_NWC]))
         eq_num_NWC = np.append(eq_num_NWC, i)
 overlap_area_JJY = np.delete(overlap_area_JJY, 0, axis=0)

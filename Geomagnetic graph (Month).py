@@ -21,10 +21,10 @@ for i in range(len(Dst_values)):
     threshold.append(-100)
 plt.plot(time, Dst_values)
 plt.plot(time, threshold, color='red', linestyle='--')
-ax.set_title('Geomagnetic activity in 2004')
+ax.set_title('Geomagnetic activity')
 ax.set_xticks(range(0,748,48))
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
-plt.xlabel('Month',labelpad=10)
+#plt.xlabel('Month',labelpad=10)
 plt.ylabel('Dst', labelpad=10)
 plt.show()
 #-------------------------------------------------------------------

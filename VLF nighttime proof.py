@@ -33,7 +33,7 @@ def raw (month, month_len, year, station_amp, station_phase):
 
 vlf_amp_month_1, vlf_phase_month_1 = raw(months[2], months_len_day_2004[6], 4, 4, 5)
 vlf_amp_month_2, vlf_phase_month_2 = raw(months[5], months_len_day_2004[5], 4, 4, 5)
-vlf_amp_month_3, vlf_phase_month_3 = raw(months[8], months_len_day_2004[8], 4, 4, 5)
+vlf_amp_month_3, vlf_phase_month_3 = raw(months[10], months_len_day_2004[10], 4, 0, 1)
 vlf_amp_month_4, vlf_phase_month_4 = raw(months[11], months_len_day_2004[11], 4, 4, 5)
 
 #------------------------Magnitude plot difference-------------------------------------------
@@ -76,14 +76,14 @@ plt.ylabel('Magnitude', labelpad=10)
 
 #Graphing parameters
 ax = plt.subplot(2,2,3)
-plt.plot(time, vlf_amp_month_3[0:4320], color='blue')
+plt.plot(time, vlf_phase_month_3[0:4320], color='blue')
 start = nighttime_2004[months_len_2004[8], 0]
 end = nighttime_2004[months_len_2004[8], 1]
-ymin = np.min(vlf_amp_month_3[0:4320])
-ymax = np.max(vlf_amp_month_3[0:4320])
+ymin = np.min(vlf_phase_month_3[0:4320])
+ymax = np.max(vlf_phase_month_3[0:4320])
 plt.vlines(start, ymin, ymax, color='red', linestyles='--')
 plt.vlines(end, ymin, ymax, color='red', linestyles='--')
-ax.set_title('September')
+ax.set_title('November')
 ax.set_xticks(list(range(0,4500,360)))
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24',])
 plt.xlabel('Time UTC', labelpad=10)

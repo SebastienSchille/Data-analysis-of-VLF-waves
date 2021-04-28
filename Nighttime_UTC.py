@@ -8,7 +8,7 @@ def read_int(char):
 
 def nighttime (year):
     #Read the csv file and save into 'hour' and 'mins' varriables
-    nighttime = np.genfromtxt(f'Nighttime data 200{year}.csv', dtype=float, usecols=(0,1), delimiter=',', converters={a: read_int for a in range(366)})
+    nighttime = np.genfromtxt(f'Nighttime data 200{year}.csv', dtype=float, usecols=(2,3), delimiter=',', converters={a: read_int for a in range(366)})
     hour = np.floor(nighttime)
     mins = np.round((nighttime - hour) * 100)
     #Adjust to UTC+12

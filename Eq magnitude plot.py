@@ -19,6 +19,7 @@ from matplotlib import pyplot as plt
 
 mag = [0,0,0,5.9,0,0,0,0,0,0,6.1,0,0,5.5,0,0,0,0,0,0,0,0,0,0,0,5.7,0,7.0,0,0]
 days = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+days2 = [0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30]
  
 
 #----------Magnitude data plot--------------------
@@ -26,8 +27,8 @@ plt.rcParams['font.size'] = '18'
 ax = plt.subplot(3,1,1)
 plt.bar(days, mag)
 plt.grid(color='#95a5a6', linestyle='--', linewidth=2, axis='y', alpha=0.5)
-ax.set_xticks(days)
-ax.set_xticklabels(days)
+ax.set_xticks(days2)
+ax.set_xticklabels(days2)
 ax.set_title('Seismic activity')
 plt.xlabel('Day',labelpad=10)
 plt.ylabel('Magnitude', labelpad=10)
