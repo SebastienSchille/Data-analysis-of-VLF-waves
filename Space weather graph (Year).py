@@ -8,7 +8,7 @@ electron_year = np.array([])
 proton_year = np.array([])
 
 for i in range(len(months)):
-    file_name = 'EPS data ' + months[i] + '2005.csv'
+    file_name = 'EPS data ' + months[i] + '2006.csv'
     electron_values = np.genfromtxt(file_name, skip_header=1, delimiter=',', usecols=(0))
     proton_values = np.genfromtxt(file_name, skip_header=1, delimiter=',', usecols=(1))
     electron_values[electron_values < 0] = float('nan')

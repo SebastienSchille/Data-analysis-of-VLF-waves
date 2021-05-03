@@ -22,17 +22,17 @@ def average (day, month, bmonth, bmonth_len, year, station_amp, station_phase):
         else:
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        #if i==2 or i==3:
-        #       amp[amp != float('nan')] = float('nan')
-        #       phase[phase != float('nan')] = float('nan')
+        if i==30:
+               amp[amp != float('nan')] = float('nan')
+               phase[phase != float('nan')] = float('nan')
         if i == (day-5):
             vlf_amp = amp
             vlf_phase = phase
         else:
             vlf_amp = np.column_stack((vlf_amp, amp))
             vlf_phase = np.column_stack((vlf_phase, phase))
-    #vlf_amp[vlf_amp == 0] = float('nan')
-    #vlf_phase[vlf_phase == 0] = float('nan')
+    vlf_amp[vlf_amp == 0] = float('nan')
+    vlf_phase[vlf_phase == 0] = float('nan')
     vlf_amp_avg = np.nanmean(vlf_amp, axis=1)
     vlf_phase_avg = np.nanmean(vlf_phase, axis=1)
     return vlf_amp_avg, vlf_phase_avg
@@ -46,13 +46,13 @@ def difference (month, month_len, bmonth, bmonth_len, year, station_amp, station
         else:
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        #amp[amp == 0] = float('nan')
-        #phase[phase == 211.00] = float('nan')
+        amp[amp == 0] = float('nan')
+        phase[phase == 0] = float('nan')
         vlf_amp_avg, vlf_phase_avg = average(i, month, bmonth, bmonth_len, year, station_amp, station_phase)
         amp_diff = amp - vlf_amp_avg
         phase_diff = phase - vlf_phase_avg
         #nighttime-------------------------
-        nighttime = f'nighttime_200{year}'
+        #nighttime = f'nighttime_200{year}'
         start = nighttime_2004[loc+i,0]
         end = nighttime_2004[loc+i,1]
         delete_rows1 = list(range(int(end), 4320))
@@ -73,18 +73,17 @@ def difference (month, month_len, bmonth, bmonth_len, year, station_amp, station
     return vlf_amp_diff, vlf_phase_diff, x_axis
 
 def std (vlf_amp_night, vlf_phase_night):
-    #vlf_phase_night[vlf_phase_night > 300] = float('nan')
     vlf_amp_std = np.nanstd(vlf_amp_night)*2
     vlf_phase_std = np.nanstd(vlf_phase_night)*2
     return vlf_amp_std, vlf_phase_std
 
 #-------------------Main code-----------------------------------------------------
 
-vlf_amp_diff_NWC, vlf_phase_diff_NWC, x_axis_NWC = difference(months[2], months_len_day[2], months[1], months_len_day[1],6,0,1, months_len[2]-1)
+vlf_amp_diff_NWC, vlf_phase_diff_NWC, x_axis_NWC = difference(months[7], months_len_day[7], months[6], months_len_day[6],4,0,1, months_len_2004[7]-1)
 vlf_amp_std_NWC, vlf_phase_std_NWC = std(vlf_amp_diff_NWC, vlf_phase_diff_NWC)
-vlf_amp_diff_JJI, vlf_phase_diff_JJI, x_axis_JJI = difference(months[2], months_len_day[2], months[1], months_len_day[1],6,4,5, months_len[2]-1)
+vlf_amp_diff_JJI, vlf_phase_diff_JJI, x_axis_JJI = difference(months[7], months_len_day[7], months[6], months_len_day[6],4,4,5, months_len_2004[7]-1)
 vlf_amp_std_JJI, vlf_phase_std_JJI = std(vlf_amp_diff_JJI, vlf_phase_diff_JJI)
-vlf_amp_diff_JJY, vlf_phase_diff_JJY, x_axis_JJY = difference(months[2], months_len_day[2], months[1], months_len_day[1],6,6,7, months_len[2]-1)
+vlf_amp_diff_JJY, vlf_phase_diff_JJY, x_axis_JJY = difference(months[7], months_len_day[7], months[6], months_len_day[6],4,6,7, months_len_2004[7]-1)
 vlf_amp_std_JJY, vlf_phase_std_JJY = std(vlf_amp_diff_JJY, vlf_phase_diff_JJY)
 
 #------------------------Magnitude plot difference-------------------------------------------
@@ -140,11 +139,6 @@ plt.ylabel('dB', labelpad=10)
 plt.show()
 
 #------------------------Phase plot difference-------------------------------------------
-
-#Asigning variables to plot
-time = range(len(vlf_amp_diff_NWC))
-
-
 #Setting a general font size for matplotlib
 plt.rcParams['font.size'] = '18'
 plt.subplots_adjust(hspace=0.4)

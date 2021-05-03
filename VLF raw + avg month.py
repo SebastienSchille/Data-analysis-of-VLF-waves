@@ -41,9 +41,9 @@ def average (month, month_len, bmonth, bmonth_len, year, station_amp, station_ph
             else:
                 amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
                 phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            #if i==2 or i==3:
-            #    amp[amp != float('nan')] = float('nan')
-            #    phase[phase != float('nan')] = float('nan')
+            if i==24 or i==25:
+                amp[amp != float('nan')] = float('nan')
+                phase[phase != float('nan')] = float('nan')
             if i == (a-5):
                 vlf_amp = amp
                 vlf_phase = phase
@@ -65,9 +65,9 @@ def average (month, month_len, bmonth, bmonth_len, year, station_amp, station_ph
 #---------------Main code (Raw signal)-------------------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_month_NWC, vlf_phase_month_NWC = raw(months[2], months_len_day[2], 6, 0, 1)
-vlf_amp_month_JJI, vlf_phase_month_JJI = raw(months[2], months_len_day[2], 6, 4, 5) 
-vlf_amp_month_JJY, vlf_phase_month_JJY = raw(months[2], months_len_day[2], 6, 6, 7) 
+vlf_amp_month_NWC, vlf_phase_month_NWC = raw(months[7], months_len_day[7], 5, 0, 1)
+vlf_amp_month_JJI, vlf_phase_month_JJI = raw(months[7], months_len_day[7], 5, 4, 5) 
+vlf_amp_month_JJY, vlf_phase_month_JJY = raw(months[7], months_len_day[7], 5, 6, 7) 
 
 #------------Month plot (Raw signal)-----------------------------------
 """
@@ -92,9 +92,9 @@ plt.show()
 #----------------Main code (Average)------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_avg_NWC, vlf_phase_avg_NWC = average(months[2], months_len_day[2], months[1], months_len_day[1], 6, 0, 1)
-vlf_amp_avg_JJI, vlf_phase_avg_JJI = average(months[2], months_len_day[2], months[1], months_len_day[1], 6, 4, 5) 
-vlf_amp_avg_JJY, vlf_phase_avg_JJY = average(months[2], months_len_day[2], months[1], months_len_day[1], 6, 6, 7)  
+vlf_amp_avg_NWC, vlf_phase_avg_NWC = average(months[7], months_len_day[7], months[6], months_len_day[6], 5, 0, 1)
+vlf_amp_avg_JJI, vlf_phase_avg_JJI = average(months[7], months_len_day[7], months[6], months_len_day[6], 5, 4, 5) 
+vlf_amp_avg_JJY, vlf_phase_avg_JJY = average(months[7], months_len_day[7], months[6], months_len_day[6], 5, 6, 7)  
 
 #------------Amplitude plot (Raw + average signal)-----------------------------------
 

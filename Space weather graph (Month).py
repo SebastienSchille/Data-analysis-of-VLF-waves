@@ -5,7 +5,7 @@ import os
 os.chdir("./EPS Data")
 months = ['JAN','FEB','MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
 
-file_name = 'EPS data ' + 'MAR' + '2006.csv'
+file_name = 'EPS data ' + 'NOV' + '2004.csv'
 electron_values = np.genfromtxt(file_name, skip_header=1, delimiter=',', usecols=(0))
 proton_values = np.genfromtxt(file_name, skip_header=1, delimiter=',', usecols=(1))
 electron_values[electron_values < 0] = float('nan')

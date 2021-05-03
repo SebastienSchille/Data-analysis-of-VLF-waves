@@ -61,16 +61,16 @@ def average (month, month_len, bmonth, bmonth_len, year, station_amp, station_ph
 #---------------Main code (Raw signal)-------------------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_month_NWC, vlf_phase_month_NWC = raw(months[8], months_len_day[8], 4, 0, 1)
-vlf_amp_month_JJI, vlf_phase_month_JJI = raw(months[8], months_len_day[8], 4, 4, 5) 
-vlf_amp_month_JJY, vlf_phase_month_JJY = raw(months[8], months_len_day[8], 4, 6, 7) 
+vlf_amp_month_NWC, vlf_phase_month_NWC = raw(months[11], months_len_day[11], 6, 0, 1)
+vlf_amp_month_JJI, vlf_phase_month_JJI = raw(months[11], months_len_day[11], 6, 4, 5) 
+vlf_amp_month_JJY, vlf_phase_month_JJY = raw(months[11], months_len_day[11], 6, 6, 7) 
 
 #----------------Main code (Average)------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_avg_NWC, vlf_phase_avg_NWC = average(months[8], months_len_day[8], months[7], months_len_day[7], 4, 0, 1)
-vlf_amp_avg_JJI, vlf_phase_avg_JJI = average(months[8], months_len_day[8], months[7], months_len_day[7], 4, 4, 5) 
-vlf_amp_avg_JJY, vlf_phase_avg_JJY = average(months[8], months_len_day[8], months[7], months_len_day[7], 4, 6, 7)  
+vlf_amp_avg_NWC, vlf_phase_avg_NWC = average(months[11], months_len_day[11], months[10], months_len_day[10], 6, 0, 1)
+vlf_amp_avg_JJI, vlf_phase_avg_JJI = average(months[11], months_len_day[11], months[10], months_len_day[10], 6, 4, 5) 
+vlf_amp_avg_JJY, vlf_phase_avg_JJY = average(months[11], months_len_day[11], months[10], months_len_day[10], 6, 6, 7)  
 
 #------------Amplitude + Phase plot (JJY)-----------------------------------
 

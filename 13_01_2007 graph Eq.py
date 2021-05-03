@@ -32,8 +32,8 @@ def average (month, month_len, bmonth, bmonth_len, year, station_amp, station_ph
     for a in range(1,(month_len+1)):
         for i in range((a-5), a+1):
             if i < 1:
-                amp = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
-                phase = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
+                amp = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year-1}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
+                phase = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year-1}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
             elif i > 0 and i < 10:
                 amp = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
                 phase = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
@@ -61,16 +61,16 @@ def average (month, month_len, bmonth, bmonth_len, year, station_amp, station_ph
 #---------------Main code (Raw signal)-------------------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_month_NWC, vlf_phase_month_NWC = raw(months[8], months_len_day[8], 4, 0, 1)
-vlf_amp_month_JJI, vlf_phase_month_JJI = raw(months[8], months_len_day[8], 4, 4, 5) 
-vlf_amp_month_JJY, vlf_phase_month_JJY = raw(months[8], months_len_day[8], 4, 6, 7) 
+vlf_amp_month_NWC, vlf_phase_month_NWC = raw(months[0], months_len_day[0], 7, 0, 1)
+vlf_amp_month_JJI, vlf_phase_month_JJI = raw(months[0], months_len_day[0], 7, 4, 5) 
+vlf_amp_month_JJY, vlf_phase_month_JJY = raw(months[0], months_len_day[0], 7, 6, 7) 
 
 #----------------Main code (Average)------------------------
 
 # NWC (0,1) JJI (4,5) JJY(6,7)
-vlf_amp_avg_NWC, vlf_phase_avg_NWC = average(months[8], months_len_day[8], months[7], months_len_day[7], 4, 0, 1)
-vlf_amp_avg_JJI, vlf_phase_avg_JJI = average(months[8], months_len_day[8], months[7], months_len_day[7], 4, 4, 5) 
-vlf_amp_avg_JJY, vlf_phase_avg_JJY = average(months[8], months_len_day[8], months[7], months_len_day[7], 4, 6, 7)  
+vlf_amp_avg_NWC, vlf_phase_avg_NWC = average(months[0], months_len_day[0], months[11], months_len_day[11], 7, 0, 1)
+vlf_amp_avg_JJI, vlf_phase_avg_JJI = average(months[0], months_len_day[0], months[11], months_len_day[11], 7, 4, 5) 
+vlf_amp_avg_JJY, vlf_phase_avg_JJY = average(months[0], months_len_day[0], months[11], months_len_day[11], 7, 6, 7)  
 
 #------------Amplitude + Phase plot (JJY)-----------------------------------
 
@@ -83,65 +83,63 @@ plt.subplots_adjust(wspace=0.25)
 
 #Graphing parameters
 ax = plt.subplot(5,2,1)
-plt.plot(time, vlf_amp_month_JJY[4320:8640], color='blue')
-plt.plot(time, vlf_amp_avg_JJY[4320:8640], linestyle='--', color='red')
+plt.plot(time, vlf_amp_month_JJY[8640:12960], color='blue')
+plt.plot(time, vlf_amp_avg_JJY[8640:12960], linestyle='--', color='red')
 plt.title('JJY-PTK Amplitude')
 ax.set_xticks([])
 
 
 ax = plt.subplot(5,2,2)
-plt.plot(time, vlf_phase_month_JJY[4320:8640], color='blue')
-plt.plot(time, vlf_phase_avg_JJY[4320:8640], linestyle='--', color='red')
+plt.plot(time, vlf_phase_month_JJY[8640:12960], color='blue')
+plt.plot(time, vlf_phase_avg_JJY[8640:12960], linestyle='--', color='red')
 plt.title('JJY-PTK Phase')
 ax.set_xticks([])
 
 
 ax = plt.subplot(5,2,3)
-plt.plot(time, vlf_amp_month_JJY[8640:12960], color='blue')
-plt.plot(time, vlf_amp_avg_JJY[8640:12960], linestyle='--', color='red')
-ax.set_xticks([])
-
-
-ax = plt.subplot(5,2,4)
-plt.plot(time, vlf_phase_month_JJY[8640:12960], color='blue')
-plt.plot(time, vlf_phase_avg_JJY[8640:12960], linestyle='--', color='red')
-ax.set_xticks([])
-
-
-ax = plt.subplot(5,2,5)
 plt.plot(time, vlf_amp_month_JJY[12960:17280], color='blue')
 plt.plot(time, vlf_amp_avg_JJY[12960:17280], linestyle='--', color='red')
 ax.set_xticks([])
 
 
-ax = plt.subplot(5,2,6)
+ax = plt.subplot(5,2,4)
 plt.plot(time, vlf_phase_month_JJY[12960:17280], color='blue')
 plt.plot(time, vlf_phase_avg_JJY[12960:17280], linestyle='--', color='red')
 ax.set_xticks([])
 
 
-ax = plt.subplot(5,2,7)
+ax = plt.subplot(5,2,5)
 plt.plot(time, vlf_amp_month_JJY[17280:21600], color='blue')
 plt.plot(time, vlf_amp_avg_JJY[17280:21600], linestyle='--', color='red')
 ax.set_xticks([])
 
 
-ax = plt.subplot(5,2,8)
+ax = plt.subplot(5,2,6)
 plt.plot(time, vlf_phase_month_JJY[17280:21600], color='blue')
 plt.plot(time, vlf_phase_avg_JJY[17280:21600], linestyle='--', color='red')
 ax.set_xticks([])
 
-ax = plt.subplot(5,2,9)
+ax = plt.subplot(5,2,7)
 plt.plot(time, vlf_amp_month_JJY[21600:25920], color='blue')
 plt.plot(time, vlf_amp_avg_JJY[21600:25920], linestyle='--', color='red')
+ax.set_xticks([])
+
+ax = plt.subplot(5,2,8)
+plt.plot(time, vlf_phase_month_JJY[21600:25920], color='blue')
+plt.plot(time, vlf_phase_avg_JJY[21600:25920], linestyle='--', color='red')
+ax.set_xticks([])
+
+ax = plt.subplot(5,2,9)
+plt.plot(time, vlf_amp_month_JJY[25920:30240], color='blue')
+plt.plot(time, vlf_amp_avg_JJY[25920:30240], linestyle='--', color='red')
 ax.set_xticks(list(range(0,4500,360)))
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24'])
 plt.xlabel('Time UTC')
 plt.ylabel('Amplitude')
 
 ax = plt.subplot(5,2,10)
-plt.plot(time, vlf_phase_month_JJY[21600:25920], color='blue')
-plt.plot(time, vlf_phase_avg_JJY[21600:25920], linestyle='--', color='red')
+plt.plot(time, vlf_phase_month_JJY[25920:30240], color='blue')
+plt.plot(time, vlf_phase_avg_JJY[25920:30240], linestyle='--', color='red')
 ax.set_xticks(list(range(0,4500,360)))
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24'])
 plt.xlabel('Time UTC')
