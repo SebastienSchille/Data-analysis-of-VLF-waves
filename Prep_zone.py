@@ -12,7 +12,7 @@ magnitude = seismic_data[:, 4]
 prep_zone_radius = 10**(0.43*magnitude)
 prep_zone_area = math.pi*(prep_zone_radius**2)
 
-#Store the values into a new Numpy array to be used other programs
+#Store the values into a new Numpy array to be used by other programs
 prepzone_data = np.column_stack((latitude_eq, longitude_eq, prep_zone_radius, prep_zone_area))
 
 

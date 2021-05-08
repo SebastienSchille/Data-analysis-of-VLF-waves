@@ -7,7 +7,7 @@ def read_int(char):
     return float(char.strip(b'"').replace(b':',b'.'))
 
 def nighttime (year):
-    #Read the csv file and save into 'hour' and 'mins' varriables
+    #Read the csv file and save the data into 'hour' and 'mins' variables
     nighttime = np.genfromtxt(f'Nighttime data 200{year}.csv', dtype=float, usecols=(2,3), delimiter=',', converters={a: read_int for a in range(366)})
     hour = np.floor(nighttime)
     mins = np.round((nighttime - hour) * 100)
@@ -18,10 +18,10 @@ def nighttime (year):
     #Convert to a 20s time interval format
     data_point1  = hour * 180
     data_point2 = mins * 3
-    #Save the daylight satrt and end times into a list
+    #Save the daylight start and end times into a list
     nighttime_start = np.array(data_point1[:,0] + data_point2[:,0])
     nighttime_end = np.array(data_point1[:,1] + data_point2[:,1])
-    #Readjust values that go beyond mightnight
+    #Readjust values that go beyond midnight
     for i in range(len(nighttime_start)):
         if nighttime_start[i] < 0:
             nighttime_start[i] = nighttime_start[i] + (24*180)

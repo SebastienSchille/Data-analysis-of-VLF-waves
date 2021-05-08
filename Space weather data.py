@@ -13,8 +13,7 @@ for a in range(len(years)):
     for b in range(len(months)):
         event_counter_electron = 0
         event_counter_proton = 0
-        file_name = 'EPS data ' + months[b] + str(years[a])+'.csv'
-        print(file_name)
+        file_name = 'EPS data ' + months[b] + str(years[a])+'.csv' 
         EPS_values = np.genfromtxt(file_name, skip_header=1, delimiter=',')
         EPS_2004 = np.vstack((EPS_2004, EPS_values))
 #------------Threshold detection--------------------------------------------------
@@ -36,4 +35,5 @@ for a in range(len(years)):
 
 EPS_events_electron = np.delete(EPS_events_electron, 0, axis=0)
 EPS_events_proton = np.delete(EPS_events_proton, 0, axis=0)
+print(EPS_events_proton)
 print(EPS_events_electron)

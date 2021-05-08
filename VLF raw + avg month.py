@@ -12,19 +12,19 @@ vlf_data_avg = np.empty(8)
 
 def raw (month, month_len, year, station_amp, station_phase):
     for i in range(1,(month_len+1)):
-        if i > 0 and i < 10:
+        if i > 0 and i < 10: #Load data
             amp = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        else:
+        else: #Load data
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        if i == 1:
+        if i == 1: #Initialisation of the first array element
             vlf_amp_month = amp
             vlf_phase_month = phase
-        else:
+        else: #Additionally days added to the array
             vlf_amp_month = np.append(vlf_amp_month, amp)
             vlf_phase_month = np.append(vlf_phase_month, phase)
-    vlf_amp_month[vlf_amp_month == 0] = float('nan')
+    vlf_amp_month[vlf_amp_month == 0] = float('nan') #Zero values neglected
     vlf_phase_month[vlf_phase_month == 0] = float('nan')
     return vlf_amp_month, vlf_phase_month
     
@@ -32,32 +32,32 @@ def raw (month, month_len, year, station_amp, station_phase):
 def average (month, month_len, bmonth, bmonth_len, year, station_amp, station_phase):
     for a in range(1,(month_len+1)):
         for i in range((a-5), a+1):
-            if i < 1:
+            if i < 1: #Load data files
                 amp = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
                 phase = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            elif i > 0 and i < 10:
+            elif i > 0 and i < 10: #Load data files
                 amp = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
                 phase = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            else:
+            else: #Load data files
                 amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
                 phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-            if i==24 or i==25:
+            if i==7 or i==8 or i==9 or i==10: #Ignore non quiet days
                 amp[amp != float('nan')] = float('nan')
                 phase[phase != float('nan')] = float('nan')
-            if i == (a-5):
+            if i == (a-5): #Initialisation of the first array element
                 vlf_amp = amp
                 vlf_phase = phase
-            else:
-                vlf_amp = np.column_stack((vlf_amp, amp))
+            else: #Additionally days added to the array
+                vlf_amp = np.column_stack((vlf_amp, amp)) 
                 vlf_phase = np.column_stack((vlf_phase, phase))
-        vlf_amp[vlf_amp == 0] = float('nan')
+        vlf_amp[vlf_amp == 0] = float('nan') #Zero values neglected
         vlf_phase[vlf_phase == 0] = float('nan')
-        vlf_amp_a = np.nanmean(vlf_amp, axis=1)
+        vlf_amp_a = np.nanmean(vlf_amp, axis=1) #Average calculated
         vlf_phase_a = np.nanmean(vlf_phase, axis=1)
-        if a == 1:
-            vlf_amp_avg = vlf_amp_a
+        if a == 1: #Average for the first day of the month
+            vlf_amp_avg = vlf_amp_a 
             vlf_phase_avg = vlf_phase_a
-        else:
+        else: #Additional days of the month added
             vlf_amp_avg = np.append(vlf_amp_avg, vlf_amp_a)
             vlf_phase_avg = np.append(vlf_phase_avg, vlf_phase_a)
     return vlf_amp_avg, vlf_phase_avg

@@ -15,7 +15,7 @@ for a in range(len(months)):
 
 
 #----------Geomagnetic data plot--------------------
-plt.rcParams['font.size'] = '22'
+plt.rcParams['font.size'] = '18'
 ax = plt.subplot(2,1,1)
 time = range(len(Dst_year))
 threshold = []
@@ -23,10 +23,10 @@ for i in range(len(Dst_year)):
     threshold.append(-100)
 plt.plot(time, Dst_year)
 plt.plot(time, threshold, color='red', linestyle='--')
-ax.set_title('Geomagnetic activity in 2004')
+ax.set_title('Geomagnetic activity')
 ax.set_xticks(months_len_2004*24)
 ax.set_xticklabels(months)
 plt.xlabel('Month',labelpad=10)
-plt.ylabel('Dst', labelpad=10)
+plt.ylabel('Dst (nT)', labelpad=10)
 plt.show()
 #-------------------------------------------------------------------

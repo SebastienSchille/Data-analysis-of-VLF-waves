@@ -6,7 +6,7 @@ def fresnelzone(n,d1,d2,lambda0,D):
     fresnelzone = sqrt((n*d1*d2*lambda0)/D) / 1000
     return fresnelzone
 
-#Function to calculate wavelengths for VLF signals
+#Function to calculate the wavelengths of the VLF signals
 wavelengths = [40, 22.2, 19.8] #JJY, JJI, NWC (KHz)
 def wavelength(wavelengths):
     VLF_lambda = (3*10**8) / (wavelengths*10**3)

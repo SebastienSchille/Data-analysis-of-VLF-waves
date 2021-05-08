@@ -12,18 +12,20 @@ Dst_year = np.array([])
 
 for a in range(4):
     for b in range(len(months)):
-        file_name = 'DST_' + months[b] + str(years[a]) + '.txt'
+        file_name = 'DST_' + months[b] + str(years[a]) + '.txt' #Load data
         Dst_values = np.genfromtxt(file_name, usecols=(range(1,25)))
         Dst_year = np.append(Dst_year, Dst_values.flatten())
 
-        for i in range(np.shape(Dst_values)[0]):
+        for i in range(np.shape(Dst_values)[0]): 
             event_counter = 0
             for z in range(np.shape(Dst_values)[1]):
+                #Identify intense geomagnetic storms
                 if Dst_values[i,z] < -100:
                     event_counter += 1
-            if event_counter > 0:
+            if event_counter > 0: 
                 Dst_avg = np.round(np.mean(Dst_values[i,:], axis=0))
                 Dst_min = np.min(Dst_values[i,:])
+                #Days with inentse geomagnetic storms stored into an array
                 Dst_events = np.vstack((Dst_events, [(str(i+1)+months[b]+str(years[a])), Dst_avg, Dst_min]))
 
 Dst_events = np.delete(Dst_events, 0, axis=0)

@@ -13,46 +13,45 @@ vlf_data_avg = np.empty(8)
 
 def average (day, month, bmonth, bmonth_len, year, station_amp, station_phase):
     for i in range((day-5), day+1):
-        if i < 1:
+        if i < 1: #Load data
             amp = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{bmonth_len+i}{bmonth}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        elif i > 0 and i < 10:
+        elif i > 0 and i < 10: #Load data
             amp = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        else:
+        else: #Load data
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        if i==30:
+        if i==7 or i==8 or i==9 or i==10: #Ignore non quiet days
                amp[amp != float('nan')] = float('nan')
                phase[phase != float('nan')] = float('nan')
-        if i == (day-5):
+        if i == (day-5): #Initialisation of the first array element
             vlf_amp = amp
             vlf_phase = phase
-        else:
+        else: #Additionally days added to the array
             vlf_amp = np.column_stack((vlf_amp, amp))
             vlf_phase = np.column_stack((vlf_phase, phase))
-    vlf_amp[vlf_amp == 0] = float('nan')
+    vlf_amp[vlf_amp == 0] = float('nan') #Zero values neglected
     vlf_phase[vlf_phase == 0] = float('nan')
-    vlf_amp_avg = np.nanmean(vlf_amp, axis=1)
+    vlf_amp_avg = np.nanmean(vlf_amp, axis=1) #Average calculated
     vlf_phase_avg = np.nanmean(vlf_phase, axis=1)
     return vlf_amp_avg, vlf_phase_avg
 
 def difference (month, month_len, bmonth, bmonth_len, year, station_amp, station_phase, loc):
     x_axis= [0]
     for i in range(1,(month_len+1)):
-        if i < 10:
+        if i < 10: #Load data
             amp = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T0{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        else:
+        else: #Load data
             amp = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_amp))
             phase = np.genfromtxt(f'T{i}{month}{year}A.kam', dtype=float, skip_header=1, usecols=(station_phase))
-        amp[amp == 0] = float('nan')
+        amp[amp == 0] = float('nan') #Zero values neglected
         phase[phase == 0] = float('nan')
-        vlf_amp_avg, vlf_phase_avg = average(i, month, bmonth, bmonth_len, year, station_amp, station_phase)
-        amp_diff = amp - vlf_amp_avg
+        vlf_amp_avg, vlf_phase_avg = average(i, month, bmonth, bmonth_len, year, station_amp, station_phase) #Calling the average function for a single day
+        amp_diff = amp - vlf_amp_avg #The signal difference calculated
         phase_diff = phase - vlf_phase_avg
         #nighttime-------------------------
-        #nighttime = f'nighttime_200{year}'
         start = nighttime_2004[loc+i,0]
         end = nighttime_2004[loc+i,1]
         delete_rows1 = list(range(int(end), 4320))
@@ -62,10 +61,10 @@ def difference (month, month_len, bmonth, bmonth_len, year, station_amp, station
         phase_diff = np.delete(phase_diff, delete_rows1, axis=0)
         phase_diff = np.delete(phase_diff, delete_rows2, axis=0)
         x_axis.append(len(amp_diff))
-        if i == 1:
+        if i == 1: #Initialisation of the first array element
             vlf_amp_diff = amp_diff
             vlf_phase_diff = phase_diff
-        else:
+        else: #Additionally days added to the array
             vlf_amp_diff = np.append(vlf_amp_diff, amp_diff)
             vlf_phase_diff = np.append(vlf_phase_diff, phase_diff)
     x_axis = np.cumsum(x_axis)
@@ -79,11 +78,11 @@ def std (vlf_amp_night, vlf_phase_night):
 
 #-------------------Main code-----------------------------------------------------
 
-vlf_amp_diff_NWC, vlf_phase_diff_NWC, x_axis_NWC = difference(months[7], months_len_day[7], months[6], months_len_day[6],4,0,1, months_len_2004[7]-1)
+vlf_amp_diff_NWC, vlf_phase_diff_NWC, x_axis_NWC = difference(months[10], months_len_day[10], months[9], months_len_day[9],4,0,1, months_len_2004[10]-1)
 vlf_amp_std_NWC, vlf_phase_std_NWC = std(vlf_amp_diff_NWC, vlf_phase_diff_NWC)
-vlf_amp_diff_JJI, vlf_phase_diff_JJI, x_axis_JJI = difference(months[7], months_len_day[7], months[6], months_len_day[6],4,4,5, months_len_2004[7]-1)
+vlf_amp_diff_JJI, vlf_phase_diff_JJI, x_axis_JJI = difference(months[10], months_len_day[10], months[9], months_len_day[9],4,4,5, months_len_2004[10]-1)
 vlf_amp_std_JJI, vlf_phase_std_JJI = std(vlf_amp_diff_JJI, vlf_phase_diff_JJI)
-vlf_amp_diff_JJY, vlf_phase_diff_JJY, x_axis_JJY = difference(months[7], months_len_day[7], months[6], months_len_day[6],4,6,7, months_len_2004[7]-1)
+vlf_amp_diff_JJY, vlf_phase_diff_JJY, x_axis_JJY = difference(months[10], months_len_day[10], months[9], months_len_day[9],4,6,7, months_len_2004[10]-1)
 vlf_amp_std_JJY, vlf_phase_std_JJY = std(vlf_amp_diff_JJY, vlf_phase_diff_JJY)
 
 #------------------------Magnitude plot difference-------------------------------------------

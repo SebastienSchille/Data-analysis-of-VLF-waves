@@ -28,6 +28,7 @@ fig,ax = plt.subplots()
 ax.set_xlim([-3000,4000])
 ax.set_ylim([-3000,7000])
 ax.set_aspect('equal')
+#plt.rcParams['font.size'] = '22'
 
 #Fresnel zone ellipses in blue
 anglefres,xfres,yfres = fresnelcentre(xJJY, yJJY)
@@ -82,63 +83,10 @@ overlap_area_JJY = np.delete(overlap_area_JJY, 0, axis=0)
 overlap_area_JJI = np.delete(overlap_area_JJI, 0, axis=0)
 overlap_area_NWC = np.delete(overlap_area_NWC, 0, axis=0)
 
-print("These are the eq overlaps with transmitter JJY", overlap_area_JJY)
+print("These are the eq overlaps with transmitter JJY:\n", overlap_area_JJY)
 print("There are a total of:", len(overlap_area_JJY), "earthquakes that overlap with JJY's signal")
-print("These are the eq overlaps with transmitter JJI", overlap_area_JJI)
+print("These are the eq overlaps with transmitter JJI:\n", overlap_area_JJI)
 print("There are a total of:", len(overlap_area_JJI), "earthquakes that overlap with JJI's signal")
-print("These are the eq overlaps with transmitter NWC", overlap_area_NWC)
+print("These are the eq overlaps with transmitter NWC:\n", overlap_area_NWC)
 print("There are a total of:", len(overlap_area_NWC), "earthquakes that overlap with NWC's signal")
 plt.show()
-
-#----------MKII code----------------------------
-
-
-
-#DEMO CODE BELLOW
-#--------------------------------------------------
-"""
-from matplotlib import pyplot as plt
-from shapely.geometry.point import Point
-from shapely import affinity
-from matplotlib.patches import Polygon
-import numpy as np
-
-def create_ellipse(centre, a, b, angle):
-    circle = Point(centre).buffer(1)
-    ellipse = affinity.scale(circle, a, b)
-    ellipser = affinity.rotate(ellipse, angle)
-    return ellipser
-
-#fig setup
-fig,ax = plt.subplots()
-ax.set_xlim([0,1000000])
-ax.set_ylim([0,1000000])
-ax.set_aspect('equal')
-
-#Fresnel zone ellipse in blue
-ellipse1 = create_ellipse((xfres,yfres), JJY_PTK_distance, (fresnelzones[0]/2), anglefres)
-verts1 = np.array(ellipse1.exterior.coords.xy)
-patch1 = Polygon(verts1.T, color = 'blue', alpha = 0.5)
-ax.add_patch(patch1)
-
-#Preperation zone circle in red    
-prepzone_circle = create_ellipse((xeq[2],yeq[2]), prep_zone_radius[2], prep_zone_radius[2], 0)
-verts2 = np.array(prepzone_circle.exterior.coords.xy)
-patch2 = Polygon(verts2.T,color = 'red', alpha = 0.5)
-ax.add_patch(patch2)
-
-##the intersect will be outlined in black
-intersect = ellipse1.intersection(prepzone_circle)
-#verts3 = np.array(intersect.exterior.coords.xy)
-#patch3 = Polygon(verts3.T, facecolor = 'none', edgecolor = 'black')
-#ax.add_patch(patch3)
-
-##compute areas and ratios 
-print('area of ellipse 1:',ellipse1.area)
-print('area of ellipse 2:',prepzone_circle.area)
-print('area of intersect:',intersect.area)
-print('intersect/ellipse1:', intersect.area/ellipse1.area)
-print('intersect/ellipse2:', intersect.area/prepzone_circle.area)
-
-plt.show()
-"""

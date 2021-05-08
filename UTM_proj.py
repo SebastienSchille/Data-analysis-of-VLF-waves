@@ -1,4 +1,4 @@
-import pyproj  #projection library
+import pyproj  #Projection library
 from Prep_zone import prepzone_data #eathquake data including epicentre location
 
 #JJY, JJI, NWC, PTK

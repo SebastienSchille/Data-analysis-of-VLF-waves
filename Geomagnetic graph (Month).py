@@ -25,6 +25,6 @@ ax.set_title('Geomagnetic activity')
 ax.set_xticks(range(0,748,48))
 ax.set_xticklabels(['0','2','4','6','8','10','12','14','16','18','20','22','24','26','28','30'])
 #plt.xlabel('Month',labelpad=10)
-plt.ylabel('Dst', labelpad=10)
+plt.ylabel('Dst (nT)', labelpad=10)
 plt.show()
 #-------------------------------------------------------------------
