@@ -28,7 +28,8 @@ fig,ax = plt.subplots()
 ax.set_xlim([-3000,4000])
 ax.set_ylim([-3000,7000])
 ax.set_aspect('equal')
-#plt.rcParams['font.size'] = '22'
+plt.xlabel('Distance (m)', labelpad=10)
+plt.ylabel('Distance (m)', labelpad=10)
 
 #Fresnel zone ellipses in blue
 anglefres,xfres,yfres = fresnelcentre(xJJY, yJJY)

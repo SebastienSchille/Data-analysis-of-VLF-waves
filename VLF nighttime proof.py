@@ -26,7 +26,7 @@ def raw (month, month_len, year, station_amp, station_phase):
             vlf_amp_month = np.append(vlf_amp_month, amp)
             vlf_phase_month = np.append(vlf_phase_month, phase)
     vlf_amp_month[vlf_amp_month == 0] = float('nan')
-    vlf_phase_month[vlf_phase_month == 211.00] = float('nan')
+    vlf_phase_month[vlf_phase_month == 0] = float('nan')
     return vlf_amp_month, vlf_phase_month
 
 #-------------------Main code-----------------------------------------------------
